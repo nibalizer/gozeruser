@@ -1,10 +1,11 @@
 Puppet::Type.type(:user).provide :gozeruser do
   @doc = "Create a new user."
-  commands :add => "useradd", :getent => "getent", :userdel => "userdel", :id => "id"
+  # Have to get funky with 'id' because ruby/puppet already use thta
+  commands :add => "useradd", :getent => "getent", :userdel => "userdel", :idcmd => "id"
 
   def exists?
     begin
-      user = id(resource['name'])
+      user = idcmd(resource['name'])
     rescue Puppet::ExecutionFailure => e
       return nil
     end
